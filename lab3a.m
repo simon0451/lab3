@@ -66,45 +66,11 @@ text(.35*xmax,.85*ymin,txt2)
 text(.35*xmax,.8*ymin,txt3)
 legend('Data','Least Squares Best Fit','Confidence Interval of Fit (95%)','Confidence Interval of Meas. (95%)','location','northeast')
 
-% Beam 
+% Part 1.d
 
 
 
-%% FFT
 
-clear all;
-close all;
-
-%Importing data
-nheaderlines = 29; %data begins at line 30
-sineStruct = importdata('Part2_1.lvm','\t',nheaderlines); %produces a structured array
-triangStruct = importdata('Part2_1_triangle.lvm','\t',nheaderlines); %produces a structured array
-sine = sineStruct.data; %extracting the usefull data from the structured array
-triang = triangStruct.data; %and for the triangle array...
-%Processing data
-sinx = sine(:,1); %time
-siny = sine(:,2); %y values of the sine wave
-sinfft = fft(siny); %the FFT of the sine wave
-triangx = triang(:,1); %time
-triangy = triang(:,2); %y valeus of the triangle wave
-triangfft = fft(triangx);
-figure
-
-
-% Plotting figures
-figure
-subplot(2,1,1)
-plot(sinx,siny)
-title('Sine Waveform')
-xlabel('Time (s)')
-ylabel('Amplitude (V)')
-
-figure
-subplot(2,1,1)
-plot(triangx,triangy)
-title('Triangle Waveform')
-xlabel('Time (s)')
-ylabel('Amplitude (V)')
 
 
 
