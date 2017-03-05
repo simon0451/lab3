@@ -7,13 +7,14 @@
 
 close all; clear all;
 
-nheaderlines=32;
-wave = importdata('p3.lvm','\t',nheaderlines); %You may have to adjust this
+nheaderlines=29;
+wave = importdata('Part2_1.lvm','\t',nheaderlines); %You may have to adjust this
 %the lvm file has four columns
+wave2 = importdata('Part2_1_triangle.lvm','\t',nheaderlines);
 
 t = wave.data(:,1);   %time vector
 v1 = wave.data(:,2);  %waveform 1
-v2 = wave.data(:,4);  %waveform 2
+v2 = wave2.data(:,2);  %waveform 2
 subplot(2,1,1)
 plot (t,v1,t,v2); grid
 xlabel ('Time (sec)')
@@ -46,7 +47,7 @@ AY2=20*log10(abs(Y2(1:NFFT/2+1)));
 %AY1=2*abs(Y1(1:NFFT/2+1));
 %AY2=2*abs(Y2(1:NFFT/2+1));
 semilogx(f,AY1,f,AY2);grid  % abs(Y) = (Re(Y)^2 + Im(Y)^2)^1/2
-axis([10 1000 -40 60])
+axis([10 1000 -40 70])
 xlabel ('Frequency (Hz.)')
 ylabel ('Log Magnitude (dBv)')
 % title('Single-Sided Amplitude Spectrum of y(t)')
