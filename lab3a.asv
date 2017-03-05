@@ -1,0 +1,30 @@
+%% Header
+%Simon Popecki
+%3. March 2017
+%ME 646
+
+%% Beam/Strain Gauge Response
+clear all;
+close all;
+load lab3.mat
+%DEDR - (:,1) is the delta e value (change in output voltage IN MILLIVOLTS) and (:,2) is
+%the change in resistance for the given shunt resistor(K OHMS)
+
+%The resistance is the independent variable
+deltaE = DEDR(:,1);
+deltaR = DEDR(:,2);
+[REbestfit,REbestfitmb] = leastSquares(deltaR,deltaE); %the slope and y intercept of the best fit line
+REbfx = REbestfit(:,1);
+REbfy = REbestfit(:,2);
+
+%making all the y values for the confidence intervals
+conInts = confInt(deltaR,deltaE); %for an N of 5, v of 4
+cifp = conInts(:,1);
+cifn = conInts(:,2);
+cimp = conInts(:,3);
+cimn = conInts
+
+plot(deltaR,deltaE,'o',REbfx,REbfy)
+
+
+
