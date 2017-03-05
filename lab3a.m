@@ -44,9 +44,9 @@ cimp = conInts(:,3);
 cimn = conInts(:,4);
 cix = linspace(deltaR(1),deltaR(end));
 
-m = num2str(REbestfitmb(2),3);
-b = num2str(REbestfitmb(1),3);
-txt = strcat('V =',m,' (V/\Omega) R ',b,' (V)');
+m = num2str(REbestfitmb(1),3);
+b = num2str(REbestfitmb(2),3);
+txt = strcat('V =',m,' (V/\Omega) R+ ',b,' (V)');
 txt2 = 'Sample Variance deg. of Freedom: 4';
 txt3 = 'Student''s t Variable at 95% conf.: 2.770';
 
