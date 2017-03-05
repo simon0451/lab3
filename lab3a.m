@@ -67,6 +67,16 @@ text(.35*xmax,.8*ymin,txt3)
 legend('Data','Least Squares Best Fit','Confidence Interval of Fit (95%)','Confidence Interval of Meas. (95%)','location','northeast')
 
 % Part 1.d
+Gain = 100;
+Marray = ZEROVMASSV(:,2);
+MV = ZEROVMASSV(:,3); %taking voltages from the displacement calculation for comparison
+VstrainM = abs(strain(MV,Gain)); %strain as calculated from the strain gauge (taking absolute value)
+Mstrain = massStrain(Marray);
+
+DP =  BEAMPRESS(:,1); %inches
+DV1 = BEAMPRESS(:,2); %voltages for pressing on the beam (mV)
+VstrainD = abs(strain(DV1,Gain)); %strain as calculated from the strain gauge (taking absolute value)
+Dstrain = dispStrain(DP);
 
 
 

@@ -44,12 +44,13 @@ cimp = conInts(:,3);
 cimn = conInts(:,4);
 cix = linspace(deltaR(1),deltaR(end));
 
-m = num2str(REbestfitmb(2),3);
-b = num2str(REbestfitmb(1),3);
-txt = strcat('V =',m,' (V/\Omega) R ',b,' (V)');
+m = num2str(REbestfitmb(1),3);
+b = num2str(REbestfitmb(2),3);
+txt = strcat('V =',m,' (V/\Omega) R+ ',b,' (V)');
 txt2 = 'Sample Variance deg. of Freedom: 4';
 txt3 = 'Student''s t Variable at 95% conf.: 2.770';
 
+%Plotting the deltaR vs. deltaE and respective confidence intervals
 figure
 plot(deltaR,deltaE,'o',REbfx,REbfy,cix,cifp,'b--',cix,cimp,'r--',cix,cifn,'b--',cix,cimn,'r--')
 title('H-Bridge Sensitivity')
@@ -65,12 +66,21 @@ text(.35*xmax,.85*ymin,txt2)
 text(.35*xmax,.8*ymin,txt3)
 legend('Data','Least Squares Best Fit','Confidence Interval of Fit (95%)','Confidence Interval of Meas. (95%)','location','northeast')
 
-%% FFT
+% Part 1.d
+Gain = 100;
+Marray = ZEROVMASSV(:,2);
+MV = ZEROVMASSV(:,3); %taking voltages from the displacement calculation for comparison
+VstrainM = abs(strain(MV,Gain)); %strain as calculated from the strain gauge (taking absolute value)
+Mstrain = massStrain(Marray);
 
-nheaderlines = 29; %data begins at line 30
-sine = importdata('Part2_1.lvm','\t',nheaderlines);
-triang = import
-load Part2_1_triangle.lvm
+DV1 = BEAMPRESS(:,2); %voltages for pressing on the beam (mV)
+VstrainD = abs(strain(DV1,Gain)); %strain as calculated from the strain gauge (taking absolute value)
+Dstrain = dispStrain(D
+
+
+
+
+
 
 
 
