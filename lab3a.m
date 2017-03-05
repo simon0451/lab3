@@ -53,7 +53,7 @@ txt3 = 'Student''s t Variable at 95% conf.: 2.770';
 figure
 plot(deltaR,deltaE,'o',REbfx,REbfy,cix,cifp,'b--',cix,cimp,'r--',cix,cifn,'b--',cix,cimn,'r--')
 title('H-Bridge Sensitivity')
-ylabel('Output Voltage (V)')
+ylabel('Change in Output Voltage (V)')
 xlabel('Change in Resistance (\Omega)')
 xmin = .08;
 xmax = .27;
