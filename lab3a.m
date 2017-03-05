@@ -10,7 +10,7 @@
 %BEAMRELEASE: the return of the beam from .250 inches to 0 inches
 %[deflection (inches) , voltage output (mV)]
 
-%DEDR: the comparison between shunt resistor change in resistance and the
+%DER: the comparison between shunt resistor resistance and the
 %corresponding change in voltage [voltage (mV) , resistance (kOhm)]
 
 %ZEROVMASSLOADV: the zero voltage, mass applied to the beam, and the
@@ -23,12 +23,15 @@
 clear all;
 close all;
 load lab3.mat
-%DEDR - (:,1) is the delta e value (change in output voltage IN MILLIVOLTS) and (:,2) is
-%the change in resistance for the given shunt resistor(K OHMS)
+%DER - (:,1) is the output voltage (IN MILLIVOLTS) and (:,2) is
+%the resistance for the given shunt resistor(K OHMS)
 
 %The resistance is the independent variable
-deltaE = DEDR(:,1);
-deltaR = DEDR(:,2);
+RSG = 120; %Ohms
+Rshunt = (DER(:,2)*1000); %converting to Ohms
+deltaR = RSG-((RSG.*Rshunt)./(RSG+Rshunt));
+deltaE = (DER(:,1)/1000)/100; %converting to volts, dividing by gain of 100
+
 [REbestfit,REbestfitmb] = leastSquares(deltaR,deltaE); %the slope and y intercept of the best fit line
 REbfx = REbestfit(:,1);
 REbfy = REbestfit(:,2);
@@ -41,9 +44,38 @@ cimp = conInts(:,3);
 cimn = conInts(:,4);
 cix = linspace(deltaR(1),deltaR(end));
 
-plot(deltaR,deltaE,'o',REbfx,REbfy,cix,cifp,'b--',cix,cifn,'b--',cix,cimp,'g--',cix,cimn,'g--')
-title('what in std. deviation?')
-ylabel('Output Voltage (mV, gain not accounted for)')
-xlabel('Resistance (k\Omega)')
+m = num2str(REbestfitmb(2),3);
+b = num2str(REbestfitmb(1),3);
+txt = strcat('V =',m,' (V/\Omega) R ',b,' (V)');
+txt2 = 'Sample Variance deg. of Freedom: 4';
+txt3 = 'Student''s t Variable at 95% conf.: 2.770';
+
+figure
+plot(deltaR,deltaE,'o',REbfx,REbfy,cix,cifp,'b--',cix,cimp,'r--',cix,cifn,'b--',cix,cimn,'r--')
+title('H-Bridge Sensitivity')
+ylabel('Output Voltage (V)')
+xlabel('Change in Resistance (\Omega)')
+xmin = .08;
+xmax = .27;
+ymin = -.0035;
+ymax = 0;
+axis ([xmin xmax ymin ymax])
+text(.35*xmax,.9*ymin,txt)
+text(.35*xmax,.85*ymin,txt2)
+text(.35*xmax,.8*ymin,txt3)
+legend('Data','Least Squares Best Fit','Confidence Interval of Fit (95%)','Confidence Interval of Meas. (95%)','location','northeast')
+
+%% FFT
+
+
+figure
+x = 0:0.01:20;
+plot(x,sin(x)), grid on
+
+
+
+
+
+
 
 

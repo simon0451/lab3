@@ -9,7 +9,7 @@ b = BF(2); %y intercept
 bfy = m*x+b; %Generating y values for the best fit
 
 Yc = bfy; %The value of y predicted by the least squares equation for a given value of x
-tvp = 2.262; %For N = 10, 95% confidence
+tvp = 2.77; %For N = 10, 95% confidence
 yiyci = (y-bfy).^2;
 sumyiyci = sum(yiyci);
 Syx = (sumyiyci/(length(y)-1))^.5; %standard error of the fit
