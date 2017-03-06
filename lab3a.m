@@ -65,46 +65,82 @@ text(.35*xmax,.9*ymin,txt)
 text(.35*xmax,.85*ymin,txt2)
 text(.35*xmax,.8*ymin,txt3)
 legend('Data','Least Squares Best Fit','Confidence Interval of Fit (95%)','Confidence Interval of Meas. (95%)','location','northeast')
+grid on
 
-% Beam 
+% Part 1.d
+Gain = 100;
+Marray = ZEROVMASSV(:,2);
+Varray = ZEROVMASSV(:,3);
+
+MV = ZEROVMASSV(:,3); %taking voltages from the displacement calculation for comparison
+VstrainM = abs(strain(MV,Gain)); %strain as calculated from the strain gauge (taking absolute value)
 
 
+DP =  BEAMPRESS(:,1); %inches
+DVP = BEAMPRESS(:,2); %voltages for pressing on the beam (mV)
+VstrainDP = abs(strain(DVP,Gain)); %strain as calculated from the strain gauge (taking absolute value)
+DPstrain = dispStrain(DP);
 
-%% FFT
+DR = BEAMRELEASE(:,1); %inches
+DVR = BEAMRELEASE(:,2); %inches
 
-clear all;
-close all;
+VstrainDR = abs(strain(DVR,Gain));
+DRstrain = dispStrain(DR);
 
-%Importing data
-nheaderlines = 29; %data begins at line 30
-sineStruct = importdata('Part2_1.lvm','\t',nheaderlines); %produces a structured array
-triangStruct = importdata('Part2_1_triangle.lvm','\t',nheaderlines); %produces a structured array
-sine = sineStruct.data; %extracting the usefull data from the structured array
-triang = triangStruct.data; %and for the triangle array...
-%Processing data
-sinx = sine(:,1); %time
-siny = sine(:,2); %y values of the sine wave
-sinfft = fft(siny); %the FFT of the sine wave
-triangx = triang(:,1); %time
-triangy = triang(:,2); %y valeus of the triangle wave
-triangfft = fft(triangx);
+Mstrain = massStrain(Marray);
+MVstrain = strain(Varray,Gain);
+
+%Best fit line for part 1.d.iii
+BEAM = (BEAMPRESS+flipud(BEAMRELEASE))/2;
+BEAMx = BEAM(:,1);
+BEAMy = BEAM(:,2);
+BEAMystrain = strain(BEAMy,Gain);
+BEAMfitV = leastSquares(BEAMx,BEAMy);
+BEAMfitVolts = BEAMfitV(:,2);
+BEAMfit = strain(BEAMfitVolts,Gain);
+% beamm = BEAMfitmb(1);
+% beamb = BEAMfitmb(2);
+conInts2 = confInt2(BEAMx,BEAMystrain);
+cifp2 = conInts2(:,1);
+cifn2 = conInts2(:,2);
+cimp2 = conInts2(:,3);
+cimn2 = conInts2(:,4);
+cix2 = linspace(BEAMx(1),BEAMx(end));
+
 figure
-
-
-% Plotting figures
-figure
-subplot(2,1,1)
-plot(sinx,siny)
-title('Sine Waveform')
-xlabel('Time (s)')
-ylabel('Amplitude (V)')
+plot(DP,DPstrain,'r:',DP,VstrainDP,'o',DR,VstrainDR,'*')
+title('Strain Measured from Displacement vs. Prediction')
+xlabel('Displacement (in)')
+ylabel('Strain')
+legend('Prediction','Data - Press','Data - Release','locaton','northwest')
+grid on
 
 figure
-subplot(2,1,1)
-plot(triangx,triangy)
-title('Triangle Waveform')
-xlabel('Time (s)')
-ylabel('Amplitude (V)')
+plot(Marray,Mstrain,'r:',Marray,MVstrain,'o')
+title('Strain Measured from Mass vs. Prediction')
+xlabel('Added Mass (g)')
+ylabel('Strain')
+legend('Prediction','Data')
+grid on
+
+txt4 = 'Sample Variance deg. of Freedom: 21';
+txt5 = 'Student''s t Variable at 95% conf.: 2.080';
+figure
+plot(DP,VstrainDP,'o',DR,VstrainDR,'*',BEAMx,BEAMfit,':',cix2,cifp2,'b--',cix2,cimp2,'r--',cix2,cifn2,'b--',cix2,cimn2,'r--')
+title('Best Fit and 95% Confidence Interval for Displacement')
+xlabel('Displacement (inches)')
+ylabel('Strain')
+legend('Data (Press)','Data (Release)','Linear Least Squares Fit','95% Conf. Interval of Fit','95% Conf. Interval of Meas.','location','northwest')
+grid on
+xmin = 0;
+xmax = .25;
+ymin = .0001;
+ymax = .0007;
+axis ([xmin xmax ymin ymax])
+text(.35*xmax,.25*ymax,txt4)
+text(.35*xmax,.2*ymax,txt5)
+
+
 
 
 
