@@ -107,6 +107,11 @@ cimp2 = conInts2(:,3);
 cimn2 = conInts2(:,4);
 cix2 = linspace(BEAMx(1),BEAMx(end));
 
+%Hysteresis
+BPstrain = strain(BEAMPRESS(:,2),Gain);
+BRstrain = strain(BEAMRELEASE(:,2),Gain);
+BeamDiff = BPstrain-BRstrain;
+
 figure
 plot(DP,DPstrain,'r:',DP,VstrainDP,'o',DR,VstrainDR,'*')
 title('Strain Measured from Displacement vs. Prediction')
@@ -127,7 +132,7 @@ txt4 = 'Sample Variance deg. of Freedom: 21';
 txt5 = 'Student''s t Variable at 95% conf.: 2.080';
 figure
 plot(DP,VstrainDP,'o',DR,VstrainDR,'*',BEAMx,BEAMfit,':',cix2,cifp2,'b--',cix2,cimp2,'r--',cix2,cifn2,'b--',cix2,cimn2,'r--')
-title('Best Fit and 95% Confidence Interval for Displacement')
+title('Best Fit and 95% Conf. Interval for Displacement')
 xlabel('Displacement (inches)')
 ylabel('Strain')
 legend('Data (Press)','Data (Release)','Linear Least Squares Fit','95% Conf. Interval of Fit','95% Conf. Interval of Meas.','location','northwest')
