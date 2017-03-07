@@ -215,11 +215,6 @@ title('Strain vs. Time for Vibrating Beam')
 xlabel('Time (s)')
 ylabel('Strain')
 
-%finding the damped natural frequency
-Td = 
-omegaD = (2*pi)/Td;
-
-
 %finding the damping ratio using method 1
 DR1 = dRatio1(pks);
 
@@ -227,6 +222,14 @@ DR1 = dRatio1(pks);
 DR2 = dRatio2(pks); %creates an array of damping ratios for the second method (put this in a table)
 avgDR2 = mean(DR2); %finding the arithmetic mean of the damping ratios from method 2 (results in single DR number)
 stdDR2 = std(DR2); %standard deviation of the DR values from method 2
+
+
+%finding the damped natural frequency
+Td = peakLocations(2)-peakLocations(1); %distance between the first and second peak
+omegaD = (2*pi)/Td; %this is the damped natural frequency
+
+%finding the undamped natural frequency
+omegaN = omegaD/((1-(DR2^2))^.5);
 
 
 
