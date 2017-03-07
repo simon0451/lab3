@@ -72,7 +72,7 @@ Gain = 100;
 Marray = ZEROVMASSV(:,2);
 Varray = ZEROVMASSV(:,3);
 
-MV = ZEROVMASSV(:,3); %taking voltages from the displacement calculation for comparison
+MV = ZEROVMASSV(:,3)-ZEROVMASSV(:,1); %taking voltages from the displacement calculation for comparison
 VstrainM = abs(strain(MV,Gain)); %strain as calculated from the strain gauge (taking absolute value)
 
 
@@ -235,20 +235,29 @@ omegaN = omegaD./((1-(avgDR2.^2)).^.5); %using the damping ratio found by the se
 E = 200000000000; %Pa
 width = .503*.0254; %m
 thickness = .052*.0254; %m
-I = (width*thickness^3);
+I = ((width*(thickness^3))/12);
 stiffCalc = (3*E*I)/(((6.291-.382)*.0254)^3); %from the cantilever beam equation
 
-% dcalc = deflection(Marray); %calculating the beam deflection given a mass (force)
-% fcalc = Marray.*9.81; %getting a force from the mass
-% kcalc = fcalc./dcalc; %a stiffness array - values should be the same
-% %this is the answer! yay
-% Kcalc = mean(kcalc); %averaging the values in the array to get a better idea of what the stiffness is
-
 %finding beam stiffness from data
+Farray = (ZEROVMASSV(:,2)./1000*9.81); %getting force in newtons from the force test data
+VFarray = (ZEROVMASSV(:,3)-ZEROVMASSV(:,1)); %getting deltaE from the force data
+intarray = linspace(Farray(1),Farray(end),2000); %newtons
+interpVF = interp1(Farray,VFarray,intarray);
 
-%beampress relates displacement to voltage output
-%the response is described by the best fit line
-%BEAMfit represents the strain at a given displacement BEAMx
+Darray = (BEAMPRESS(:,1).*.0254); %getting displacement in meters from displacement test data
+VDarray = (BEAMPRESS(:,2)-BEAMPRESS(1)); %getting the deltaE for displacement
+
+POIarray = find(interpVF >= VDarray(6));
+POIindex = POIarray(1); %position in the interpVF array where displacement is a known value
+DPOI = Darray(6); %the displacement in meters at the point of interest
+FPOI = intarray(POIindex); %the force in Netwons at the point of interest
+
+stiffExp = FPOI/DPOI;
+
+%finding beam volume
+Vbeam = ((6.291-.382)*.0254)*width*thickness;
+rhoSteel = 8050; %kg/m^3
+MassofBeam = Vbeam*rhoSteel;
 
 
 
