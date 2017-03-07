@@ -216,9 +216,8 @@ xlabel('Time (s)')
 ylabel('Strain')
 
 %finding the damped natural frequency
-Td = peakLocations(2)-peakLocations(1); %distance between the first and second peak
-omegaD = (2*pi)/Td; %this is the damped natural frequency
-
+Td = 
+omegaD = (2*pi)/Td;
 
 
 %finding the damping ratio using method 1
