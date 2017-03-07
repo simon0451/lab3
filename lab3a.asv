@@ -148,8 +148,6 @@ text(.35*xmax,.2*ymax,txt5)
 %% Cantilever Beam Vibration - Part 2
 
 %clearing old variables and loading in data from lab book
-clear all;
-close all;
 load lab3.mat
 
 %loading data and processing it into usefull arrays (only working with
@@ -214,6 +212,7 @@ plot(test3t,test3s,peakLocations,pks,'r.',depLocations,dep,'r.')
 title('Strain vs. Time for Vibrating Beam')
 xlabel('Time (s)')
 ylabel('Strain')
+legend('Data','Peaks')
 
 %finding the damping ratio using method 1
 DR1 = dRatio1(pks);
@@ -226,12 +225,16 @@ stdDR2 = std(DR2); %standard deviation of the DR values from method 2
 
 %finding the damped natural frequency
 Td = peakLocations(2)-peakLocations(1); %distance between the first and second peak
-omegaD = (2*pi)/Td; %this is the damped natural frequency
+omegaD = (2*pi)./Td; %this is the damped natural frequency
 
 %finding the undamped natural frequency
-omegaN = omegaD/((1-(DR2^2))^.5);
+omegaN = omegaD./((1-(avgDR2.^2)).^.5); %using the damping ratio found by the second method (they are basically the same)
 
+%finding beam stiffness from data
 
+%beampress relates displacement to voltage output
+%the response is described by the best fit line
+strain(BEAMfitVolts);
 
 
 

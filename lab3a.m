@@ -148,8 +148,6 @@ text(.35*xmax,.2*ymax,txt5)
 %% Cantilever Beam Vibration - Part 2
 
 %clearing old variables and loading in data from lab book
-clear all;
-close all;
 load lab3.mat
 
 %loading data and processing it into usefull arrays (only working with
@@ -230,10 +228,27 @@ Td = peakLocations(2)-peakLocations(1); %distance between the first and second p
 omegaD = (2*pi)./Td; %this is the damped natural frequency
 
 %finding the undamped natural frequency
-omegaN = omegaD/((1-(DR2.^2))^.5); %using the damping ratio found by the second method (they are basically the same)
+omegaN = omegaD./((1-(avgDR2.^2)).^.5); %using the damping ratio found by the second method (they are basically the same)
 
 
+%calculating beam stiffness
+E = 200000000000; %Pa
+width = .503*.0254; %m
+thickness = .052*.0254; %m
+I = (width*thickness^3);
+stiffCalc = (3*E*I)/(((6.291-.382)*.0254)^3); %from the cantilever beam equation
 
+% dcalc = deflection(Marray); %calculating the beam deflection given a mass (force)
+% fcalc = Marray.*9.81; %getting a force from the mass
+% kcalc = fcalc./dcalc; %a stiffness array - values should be the same
+% %this is the answer! yay
+% Kcalc = mean(kcalc); %averaging the values in the array to get a better idea of what the stiffness is
+
+%finding beam stiffness from data
+
+%beampress relates displacement to voltage output
+%the response is described by the best fit line
+%BEAMfit represents the strain at a given displacement BEAMx
 
 
 
