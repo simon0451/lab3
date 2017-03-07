@@ -259,6 +259,7 @@ Vbeam = ((6.291-.382)*.0254)*width*thickness;
 rhoSteel = 8050; %kg/m^3
 MassofBeam = Vbeam*rhoSteel;
 
+%% FFT - Part 3
 
 
 
