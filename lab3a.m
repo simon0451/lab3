@@ -145,6 +145,80 @@ axis ([xmin xmax ymin ymax])
 text(.35*xmax,.25*ymax,txt4)
 text(.35*xmax,.2*ymax,txt5)
 
+%% Cantilever Beam Vibration - Part 2
+
+%clearing old variables and loading in data from lab book
+clear all;
+close all;
+load lab3.mat
+
+%loading data and processing it into usefull arrays (only working with
+%test 3)
+nheaderlines=29; %data starts on line 30
+% test1struct = importdata('Test1.lvm','\t',nheaderlines); %importing three waveforms, at least one should be good
+% test2struct = importdata('Test2.lvm','\t',nheaderlines);
+test3struct = importdata('Test3.lvm','\t',nheaderlines);
+% test1 = test1struct.data; %pulling useful data out of the structured array
+% test2 = test2struct.data;
+test3 = test3struct.data;
+% test1t = test1(:,1); %the time array for test 1 - units are presumed to be seconds
+% test2t = test2(:,1); %the time array for test 2
+test3traw = test3(:,1); %the time array for test 3
+% test1V = test1(:,2); %the voltage array for test 1
+% test2V = test2(:,2); %the voltage array for test 2
+test3Vraw = test3(:,2); %the voltage array for test 3
+
+%plotting the data together to see what looks best
+% figure
+% plot(test1t,test1V,test2t,test2V,test3traw,test3Vraw)
+% title('Test Plot - Which Data Set is Best?')
+% xlabel('Time (s)')
+% ylabel('Voltage (V)')
+% legend('Test 1','Test 2','Test 3')
+%test 2 is the biggest, test 1 is the smallest, and test 3 in inbetween
+%going with test 3 data for no particular reason....
+
+%removing the part of the data before 0 seconds
+test3t = test3traw(test3traw >=0);
+test3V = test3Vraw(end-(length(test3t))+1:end);
+%plotting to see how it looks (not normalized about zero yet)
+% figure
+% plot(test3t,test3V)
+%looks good!
+
+%normalizing the data about 0 V
+meantest3V = mean(test3V);
+test3Vn = test3V-meantest3V; %creating the normalized waveform which gives us deltaE
+%plotting to check
+% figure
+% plot(test3t,test3Vn)
+%looks good!
+
+%converting the normalized waveform to strain
+Gain = 100; %the gain is probably 100, larger gains make strain smaller
+test3s = strain(test3Vn,Gain);
+
+%plotting to check
+% figure
+% plot(test3t,test3s)
+% grid on
+%all values between .00000005 and .00000022
+th = .00000005;
+[pks,dep,pidx,didx] = peakdet(test3s,th);
+peakLocations = test3t(pidx);
+depLocations = test3t(didx);
+
+%plotting the strain vs. time waveform with peaks and depressions
+figure
+plot(test3t,test3s,peakLocations,pks,'r.',depLocations,dep,'r.')
+title('Strain vs. Time for Vibrating Beam')
+xlabel('Time (s)')
+ylabel('Strain')
+
+
+
+
+
 
 
 

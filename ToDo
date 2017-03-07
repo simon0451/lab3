@@ -1,0 +1,4 @@
+get strain vs. time for the vibrating beam data
+use peak determinating to find the peaks for these data
+---somehow find the damped natural frequency from this, damping ratio, and natural frequency... ogata or the j-lab book may be useful for this
+---see problem 3.43 (in j-lab book) for description - this method uses least squares there is also the equation in the lab with the lns
