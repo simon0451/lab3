@@ -276,7 +276,6 @@ subplot(2,1,1)
 plot (t,v1,t,v2); grid
 xlabel ('Time (sec)')
 ylabel ('Volts (V)')
-legend('Strain Gauge','Load Cell')
 T = t(2)-t(1);         % Time per sample
 Fs = 1/T;              % Sampling frequency
 L = size(v1);          % Length of signal - # of points
@@ -312,7 +311,7 @@ legend('Strain Gauge','Load Cell')
 Vout = .3; %Volts
 G = 100; %gain
 Eex = 5; %Volts
-Ffs = 100*4.44822; %force, converted from pounds to N
+Ffs = 100*0.453592; %mass, kg
 Slc = 3.4/1000; %Slc - V/V (converted from mV/v)
 
 T = (Vout*Ffs)/(Slc*Eex*G); %tension in Newtons
@@ -320,10 +319,10 @@ T = (Vout*Ffs)/(Slc*Eex*G); %tension in Newtons
 %Finding the natural frequency
 rho = .006805; %kg/m - the mass per unit length of the string
 stringLengthInches = 28+7/16; %string length in inches
-l = stringLengthInches*.0254; %converting the string length to meters
+l = stringLenghInches*.0254; %converting the string length to meters
 n = [1 2 3 4]; %The harmonics we are interested in
 
-fn = (1./(2.*l)).*((T/rho).^.5).*n; %finding natural frequency
+fn = (1./(2.*l)).*(T/).^.5.*n
 
 
 
